@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Rocket, Mail, Download, ChevronDown } from "lucide-react";
 import { fadeInUp, float } from "@/lib/animations";
@@ -13,53 +13,52 @@ const typingTexts = [
 
 export function HeroSection() {
   const [typingText, setTypingText] = useState("");
-  const [textIndex, setTextIndex] = useState(0);
-  const [charIndex, setCharIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [isInitialized, setIsInitialized] = useState(false);
+  const textIndexRef = useRef(0);
+  const charIndexRef = useRef(0);
+  const isDeleteingRef = useRef(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (!isInitialized) {
-      setIsInitialized(true);
-      return;
-    }
-
-    const type = () => {
-      const currentText = typingTexts[textIndex];
+    const animate = () => {
+      const currentText = typingTexts[textIndexRef.current];
       
-      if (isDeleting) {
-        setTypingText(currentText.substring(0, charIndex - 1));
-        setCharIndex(prev => prev - 1);
+      if (!isDeleteingRef.current) {
+        // Typing phase
+        if (charIndexRef.current < currentText.length) {
+          charIndexRef.current += 1;
+          setTypingText(currentText.substring(0, charIndexRef.current));
+          timeoutRef.current = setTimeout(animate, 200); // Slower typing
+        } else {
+          // Pause before deleting
+          timeoutRef.current = setTimeout(() => {
+            isDeleteingRef.current = true;
+            animate();
+          }, 3000);
+        }
       } else {
-        setTypingText(currentText.substring(0, charIndex + 1));
-        setCharIndex(prev => prev + 1);
+        // Deleting phase
+        if (charIndexRef.current > 0) {
+          charIndexRef.current -= 1;
+          setTypingText(currentText.substring(0, charIndexRef.current));
+          timeoutRef.current = setTimeout(animate, 100); // Faster deleting
+        } else {
+          // Move to next text
+          isDeleteingRef.current = false;
+          textIndexRef.current = (textIndexRef.current + 1) % typingTexts.length;
+          timeoutRef.current = setTimeout(animate, 1000);
+        }
       }
-
-      let typeSpeed = isDeleting ? 50 : 100;
-
-      if (!isDeleting && charIndex >= currentText.length) {
-        typeSpeed = 2000;
-        setIsDeleting(true);
-      } else if (isDeleting && charIndex <= 0) {
-        setIsDeleting(false);
-        setTextIndex((textIndex + 1) % typingTexts.length);
-        typeSpeed = 500;
-      }
-
-      return setTimeout(type, typeSpeed);
     };
 
-    const timeoutId = type();
-    return () => clearTimeout(timeoutId);
-  }, [charIndex, isDeleting, textIndex, isInitialized]);
+    // Start animation after a short delay
+    timeoutRef.current = setTimeout(animate, 1000);
 
-  useEffect(() => {
-    if (isInitialized) {
-      setTypingText("");
-      setCharIndex(0);
-      setIsDeleting(false);
-    }
-  }, [isInitialized]);
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []); // Empty dependency array - runs only once
 
   const scrollToProjects = () => {
     const element = document.getElementById("projects");
@@ -151,7 +150,7 @@ export function HeroSection() {
             className="text-2xl md:text-4xl font-semibold text-gray-700 dark:text-gray-300 mb-8 h-16 flex items-center justify-center"
           >
             <span className="border-r-2 border-blue-500 pr-1 min-h-[1em] inline-block">
-              {typingText || "Data Science Enthusiast"}
+              {typingText || " "}
             </span>
           </motion.div>
           
