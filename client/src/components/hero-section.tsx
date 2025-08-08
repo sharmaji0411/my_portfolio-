@@ -16,36 +16,50 @@ export function HeroSection() {
   const [textIndex, setTextIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
+    if (!isInitialized) {
+      setIsInitialized(true);
+      return;
+    }
+
     const type = () => {
       const currentText = typingTexts[textIndex];
       
       if (isDeleting) {
         setTypingText(currentText.substring(0, charIndex - 1));
-        setCharIndex(charIndex - 1);
+        setCharIndex(prev => prev - 1);
       } else {
         setTypingText(currentText.substring(0, charIndex + 1));
-        setCharIndex(charIndex + 1);
+        setCharIndex(prev => prev + 1);
       }
 
       let typeSpeed = isDeleting ? 50 : 100;
 
-      if (!isDeleting && charIndex === currentText.length) {
+      if (!isDeleting && charIndex >= currentText.length) {
         typeSpeed = 2000;
         setIsDeleting(true);
-      } else if (isDeleting && charIndex === 0) {
+      } else if (isDeleting && charIndex <= 0) {
         setIsDeleting(false);
         setTextIndex((textIndex + 1) % typingTexts.length);
         typeSpeed = 500;
       }
 
-      setTimeout(type, typeSpeed);
+      return setTimeout(type, typeSpeed);
     };
 
-    const timeout = setTimeout(type, 100);
-    return () => clearTimeout(timeout);
-  }, [charIndex, isDeleting, textIndex]);
+    const timeoutId = type();
+    return () => clearTimeout(timeoutId);
+  }, [charIndex, isDeleting, textIndex, isInitialized]);
+
+  useEffect(() => {
+    if (isInitialized) {
+      setTypingText("");
+      setCharIndex(0);
+      setIsDeleting(false);
+    }
+  }, [isInitialized]);
 
   const scrollToProjects = () => {
     const element = document.getElementById("projects");
@@ -134,10 +148,10 @@ export function HeroSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
-            className="text-2xl md:text-4xl font-semibold text-gray-700 dark:text-gray-300 mb-8 h-12"
+            className="text-2xl md:text-4xl font-semibold text-gray-700 dark:text-gray-300 mb-8 h-16 flex items-center justify-center"
           >
-            <span className="border-r-2 border-blue-500 pr-1">
-              {typingText}
+            <span className="border-r-2 border-blue-500 pr-1 min-h-[1em] inline-block">
+              {typingText || "Data Science Enthusiast"}
             </span>
           </motion.div>
           
