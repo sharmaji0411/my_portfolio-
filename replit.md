@@ -6,6 +6,21 @@ This is a personal portfolio website for Vansh Sharma, a Data Science enthusiast
 
 Preferred communication style: Simple, everyday language.
 
+# Recent Changes (August 2025)
+
+## Backend Conversion (August 12, 2025)
+- Successfully converted from Node.js-only backend to dual backend support
+- Added complete Python Flask backend with identical API functionality
+- Created comprehensive documentation for both backend options
+- All frontend components remain compatible with both backends
+
+## Enhanced Portfolio Features
+- Added interactive data science visualizations with animated charts
+- Implemented celebration confetti effects for achievements
+- Created enhanced skills section with floating particles and gradient animations
+- Replaced static about section image with interactive data science ecosystem
+- Added ML pipeline flow visualization with animated process steps
+
 # System Architecture
 
 ## Frontend Architecture
