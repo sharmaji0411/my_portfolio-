@@ -6,6 +6,7 @@ A modern, interactive portfolio website showcasing data science expertise, proje
 
 - **Interactive Animations**: Smooth transitions, floating particles, and engaging hover effects
 - **Data Science Visualizations**: Real-time charts, ML pipeline flows, and interactive metrics
+- **Resume Download**: Professional resume download with smart error handling
 - **Dual Backend Support**: Choose between Node.js (TypeScript) or Python (Flask)
 - **Responsive Design**: Works perfectly on desktop, tablet, and mobile devices
 - **Dark/Light Theme**: Automatic theme switching with smooth transitions
@@ -42,7 +43,12 @@ git clone <repository-url>
 cd portfolio-website
 ```
 
-### 2. Install Dependencies
+### 2. Add Your Resume (Important!)
+
+Place your resume as `Vansh_Sharma_Resume.pdf` in `client/public/assets/documents/` folder.
+See [RESUME_SETUP.md](RESUME_SETUP.md) for detailed instructions.
+
+### 3. Install Dependencies
 
 #### For Node.js Backend (Recommended)
 ```bash
@@ -61,7 +67,7 @@ pip install flask flask-cors pydantic python-dotenv typing-extensions
 pip install -r server_python/requirements.txt
 ```
 
-### 3. Build the Frontend (Production)
+### 4. Build the Frontend (Production)
 
 ```bash
 # Build the React frontend for production
@@ -113,6 +119,10 @@ NODE_ENV=production python3 run_python.py
 ```
 portfolio-website/
 ├── client/                     # React frontend
+│   ├── public/
+│   │   └── assets/
+│   │       └── documents/      # 📄 Put your resume here!
+│   │           └── Vansh_Sharma_Resume.pdf
 │   ├── src/
 │   │   ├── components/        # React components
 │   │   ├── pages/            # Page components

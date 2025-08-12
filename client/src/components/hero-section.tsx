@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Rocket, Mail, Download, ChevronDown } from "lucide-react";
 import { fadeInUp, float } from "@/lib/animations";
+import { useToast } from "@/hooks/use-toast";
 
 const typingTexts = [
   "Problem Solver",
@@ -18,6 +19,7 @@ export function HeroSection() {
   const charIndexRef = useRef(0);
   const isDeleteingRef = useRef(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const { toast } = useToast();
 
   useEffect(() => {
     const animate = () => {
@@ -90,11 +92,38 @@ export function HeroSection() {
   };
 
   const downloadResume = () => {
-    // Create a dummy resume download
+    // Download the actual resume PDF
     const link = document.createElement('a');
-    link.href = '#';
+    link.href = '/assets/documents/Vansh_Sharma_Resume.pdf';
     link.download = 'Vansh_Sharma_Resume.pdf';
-    link.click();
+    link.target = '_blank';
+    
+    // Check if file exists before attempting download
+    fetch(link.href, { method: 'HEAD' })
+      .then(response => {
+        if (response.ok) {
+          link.click();
+          toast({
+            title: "Resume Downloaded",
+            description: "Vansh Sharma's resume has been downloaded successfully.",
+          });
+        } else {
+          // Fallback: show message if resume not found
+          toast({
+            title: "Resume Unavailable",
+            description: "Resume is currently being updated. Please check back soon or contact me directly for the latest version.",
+            variant: "destructive",
+          });
+        }
+      })
+      .catch(() => {
+        // Fallback for network errors
+        toast({
+          title: "Download Error",
+          description: "Resume download temporarily unavailable. Please contact me directly for the latest version.",
+          variant: "destructive",
+        });
+      });
   };
 
   return (
