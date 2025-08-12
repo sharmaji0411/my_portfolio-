@@ -1,6 +1,6 @@
 # Overview
 
-This is a personal portfolio website for Vansh Sharma, a Data Science enthusiast and undergraduate student. The application showcases his skills, projects, education, and certifications in data science, machine learning, GIS analysis, and blockchain development. The portfolio is built as a full-stack web application with a modern React frontend and Express.js backend, featuring contact form functionality and responsive design.
+This is a personal portfolio website for Vansh Sharma, a Data Science enthusiast and undergraduate student. The application showcases his skills, projects, education, and certifications in data science, machine learning, GIS analysis, and blockchain development. The portfolio is built as a full-stack web application with a modern React frontend and dual backend options (Node.js/TypeScript and Python/Flask), featuring contact form functionality, interactive animations, and responsive design.
 
 # User Preferences
 
@@ -19,12 +19,14 @@ Preferred communication style: Simple, everyday language.
 - **Theme Support**: Custom theme provider with dark/light mode switching
 
 ## Backend Architecture
-- **Runtime**: Node.js with Express.js framework
-- **Language**: TypeScript with ES modules
+- **Dual Backend Support**: Node.js (TypeScript) and Python (Flask) options
+- **Node.js Backend**: Express.js with TypeScript, Vite integration, hot reload
+- **Python Backend**: Flask with Pydantic validation, CORS support, request logging
 - **API Design**: RESTful endpoints for contact form submission and message retrieval
-- **Development Server**: Vite integration for hot module replacement in development
+- **Development Server**: Vite integration (Node.js) or Flask dev server (Python)
 - **Request Logging**: Custom middleware for API request/response logging
 - **Error Handling**: Centralized error handling with structured error responses
+- **Storage**: Memory/file storage options for both backends
 
 ## Data Storage Solutions
 - **Database**: PostgreSQL configured via Drizzle ORM
