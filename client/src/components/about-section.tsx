@@ -1,43 +1,9 @@
 import { motion } from "framer-motion";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 import { fadeInUp, slideInLeft, slideInRight } from "@/lib/animations";
-import { useState, useEffect } from "react";
 
 export function AboutSection() {
   const { ref, isIntersecting } = useIntersectionObserver();
-  const [projectCount, setProjectCount] = useState(0);
-  const [certCount, setCertCount] = useState(0);
-
-  useEffect(() => {
-    if (isIntersecting) {
-      // Animate counters
-      const projectTarget = 15;
-      const certTarget = 5;
-      const duration = 2000;
-      const steps = 60;
-      const projectIncrement = projectTarget / steps;
-      const certIncrement = certTarget / steps;
-
-      let currentProject = 0;
-      let currentCert = 0;
-
-      const interval = setInterval(() => {
-        currentProject = Math.min(currentProject + projectIncrement, projectTarget);
-        currentCert = Math.min(currentCert + certIncrement, certTarget);
-        
-        setProjectCount(Math.floor(currentProject));
-        setCertCount(Math.floor(currentCert));
-
-        if (currentProject >= projectTarget && currentCert >= certTarget) {
-          clearInterval(interval);
-          setProjectCount(projectTarget);
-          setCertCount(certTarget);
-        }
-      }, duration / steps);
-
-      return () => clearInterval(interval);
-    }
-  }, [isIntersecting]);
 
   return (
     <section 
@@ -80,22 +46,6 @@ export function AboutSection() {
             <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed mb-8">
               Demonstrated success in hackathons, academic projects, and tool development. Adept in translating business needs into technical solutions. Seeking to contribute to data-driven or tech-oriented roles in a dynamic organization.
             </p>
-            
-            {/* Achievement Counters */}
-            <div className="grid grid-cols-2 gap-6">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
-                  {projectCount}+
-                </div>
-                <p className="text-gray-600 dark:text-gray-400">Projects Completed</p>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">
-                  {certCount}+
-                </div>
-                <p className="text-gray-600 dark:text-gray-400">Certifications</p>
-              </div>
-            </div>
           </motion.div>
         </div>
       </div>

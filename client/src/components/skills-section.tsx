@@ -90,11 +90,14 @@ export function SkillsSection() {
             <motion.div
               key={category.title}
               variants={fadeInUp}
-              className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
+              className="group bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg hover:shadow-2xl border border-gray-200 dark:border-slate-700 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105"
             >
-              <h3 className={`text-xl font-semibold mb-6 ${colorClasses[category.color as keyof typeof colorClasses].title}`}>
-                {category.title}
-              </h3>
+              <div className="flex items-center mb-6">
+                <div className={`w-3 h-3 rounded-full ${colorClasses[category.color as keyof typeof colorClasses].progress} mr-3`}></div>
+                <h3 className={`text-xl font-bold ${colorClasses[category.color as keyof typeof colorClasses].title} group-hover:scale-105 transition-transform duration-300`}>
+                  {category.title}
+                </h3>
+              </div>
               <div className="space-y-4">
                 {category.skills.map((skill, skillIndex) => (
                   <div key={skill.name} className="skill-item">

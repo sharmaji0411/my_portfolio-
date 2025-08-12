@@ -7,6 +7,7 @@ import { useScrollProgress } from "@/hooks/use-scroll-progress";
 const navItems = [
   { href: "#home", label: "Home" },
   { href: "#about", label: "About" },
+  { href: "#certifications", label: "Certifications" },
   { href: "#skills", label: "Skills" },
   { href: "#projects", label: "Projects" },
   { href: "#education", label: "Education" },

@@ -4,11 +4,12 @@ import { Rocket, Mail, Download, ChevronDown } from "lucide-react";
 import { fadeInUp, float } from "@/lib/animations";
 
 const typingTexts = [
+  "Problem Solver",
   "Data Science Enthusiast",
-  "Machine Learning Engineer",
-  "Blockchain Developer",
   "GIS Analyst",
-  "Problem Solver"
+  "Machine Learning Engineer",
+  "Backend Developer",
+  "Blockchain Developer"
 ];
 
 export function HeroSection() {
