@@ -27,25 +27,25 @@ export function HeroSection() {
         if (charIndexRef.current < currentText.length) {
           charIndexRef.current += 1;
           setTypingText(currentText.substring(0, charIndexRef.current));
-          timeoutRef.current = setTimeout(animate, 200); // Slower typing
+          timeoutRef.current = setTimeout(animate, 100); // Faster typing
         } else {
           // Pause before deleting
           timeoutRef.current = setTimeout(() => {
             isDeleteingRef.current = true;
             animate();
-          }, 3000);
+          }, 1500);
         }
       } else {
         // Deleting phase
         if (charIndexRef.current > 0) {
           charIndexRef.current -= 1;
           setTypingText(currentText.substring(0, charIndexRef.current));
-          timeoutRef.current = setTimeout(animate, 100); // Faster deleting
+          timeoutRef.current = setTimeout(animate, 50); // Faster deleting
         } else {
           // Move to next text
           isDeleteingRef.current = false;
           textIndexRef.current = (textIndexRef.current + 1) % typingTexts.length;
-          timeoutRef.current = setTimeout(animate, 1000);
+          timeoutRef.current = setTimeout(animate, 500);
         }
       }
     };
