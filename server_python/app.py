@@ -12,6 +12,7 @@ from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from pydantic import BaseModel, ValidationError, field_validator
 import logging
+from email_service import send_contact_notification
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -28,6 +29,7 @@ if not app.static_folder or not os.path.exists(app.static_folder):
 class ContactMessage(BaseModel):
     name: str
     email: str
+    subject: str
     message: str
     created_at: Optional[str] = None
     
@@ -45,6 +47,13 @@ class ContactMessage(BaseModel):
         if not v or not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', v):
             raise ValueError('Invalid email address')
         return v.lower().strip()
+    
+    @field_validator('subject')
+    @classmethod
+    def validate_subject(cls, v):
+        if not v or len(v.strip()) < 5:
+            raise ValueError('Subject must be at least 5 characters long')
+        return v.strip()
     
     @field_validator('message')
     @classmethod
@@ -125,6 +134,22 @@ def submit_contact():
         # Store the message
         message_data = message.model_dump()
         saved_message = storage.add_message(message_data)
+        
+        # Send email notification
+        try:
+            email_sent = send_contact_notification(
+                name=message.name,
+                email=message.email,
+                subject=message.subject,
+                message=message.message
+            )
+            if email_sent:
+                logger.info('Email notification sent successfully')
+            else:
+                logger.warning('Failed to send email notification')
+        except Exception as email_error:
+            logger.error(f'Email notification error: {str(email_error)}')
+            # Don't fail the entire request if email fails
         
         return jsonify({
             'success': True,
